@@ -20,20 +20,26 @@ baud_rate = 115200
 
 arduino = serial.Serial(port=serial_port, baudrate=baud_rate, timeout=.1)
 
-def write_read(x):
-    arduino.write(bytes(x,   'utf-8'))
-    time.sleep(0.05)
-    data = arduino.readline()
-    return data
+def send_command(c: str):
+    arduino.write(bytes(c,   'utf-8'))
+    arduino.flush()
+    print(f'Sent: {c}')
 
-def shock():
-    value = write_read("T")
-    #print(value)
+def shock(command: str):
+    send_command(command)
 
 # ---- Main ----
 is_running = True
-while is_running:
-    print("'y' to shock")
-    if input(": ") == "y":
-        shock()
 
+while is_running:
+    shock_strength: str = input("Enter intensity (L, M, H): ").upper()
+    if not shock_strength in ["L", "M", "H"]:
+        continue
+
+    do_shock = input("shock (y/n): ")
+    if  do_shock == 'y':
+        shock(shock_strength)
+        do_shock = ''
+    else:
+        print("closing software...")
+        break
