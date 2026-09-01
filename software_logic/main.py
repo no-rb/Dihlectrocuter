@@ -83,6 +83,10 @@ def Main():
 
     is_running = True
     while is_running:
+        # End if no arduino is connected
+        if arduino == None:
+            is_running = False
+
         # Active window (from pygetwindow)
         active_window = gw.getActiveWindow()
 
