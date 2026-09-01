@@ -40,6 +40,7 @@ def shock(command: str):
 banned_tabs = [
     "youtube",
     "github",
+    "tiktok" #victor...
     "discord",
     "twitch",
     "e621"
@@ -74,20 +75,21 @@ def Main():
     #               - SHOCK THAT MF'er (strength determined in settings)
     #           - Reset timer
 
-    # Get strength of the shock from user
+    is_running = True
+
+    # End if no arduino is connected
+    if arduino == None:
+        return
+
+    # Get settings input from user
     timer_start_value = int(input("Set the timer (in seconds): "))
+
     shock_timer = timer_start_value
     shock_strength: str = input("Enter intensity (L, M, H): ").upper()
-    if not shock_strength in ["L", "M", "H"]:
+    while not shock_strength in ["L", "M", "H"]:
         shock_strength: str = input("Enter intensity (L, M, H): ").upper()
 
-    is_running = True
     while is_running:
-        # End if no arduino is connected
-        if arduino == None:
-            is_running = False
-            break
-
         # Active window (from pygetwindow)
         active_window = gw.getActiveWindow()
 
@@ -98,15 +100,19 @@ def Main():
         print(f'Time left: {shock_timer} seconds')
 
         if shock_timer <= 0:
-            # Get confirmation to administer the shock
-            do_shock = input("shock (y/n): ")
-            if  do_shock == 'y':
-                shock(shock_strength)
-                do_shock = ''
-            else:
-                print("closing software...")
-                break
-            shock_timer = timer_start_value
+            shock(shock_strength)
+
+            # NOTE: Removed shock confirmation
+
+            # # Get confirmation to administer the shock
+            # do_shock = input("shock (y/n): ")
+            # if  do_shock == 'y':
+            #     shock(shock_strength)
+            #     do_shock = ''
+            # else:
+            #     print("closing software...")
+            #     break
+            # shock_timer = timer_start_value
 
 if __name__ == "__main__":
     Main()
