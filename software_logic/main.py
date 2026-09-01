@@ -101,6 +101,7 @@ def Main():
 
         if shock_timer <= 0:
             shock(shock_strength)
+            shock_timer = timer_start_value
 
             # NOTE: Removed shock confirmation
 
@@ -112,7 +113,6 @@ def Main():
             # else:
             #     print("closing software...")
             #     break
-            # shock_timer = timer_start_value
 
 if __name__ == "__main__":
     Main()
